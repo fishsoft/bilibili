@@ -2,27 +2,30 @@ import 'package:bilibili/http/core/adapter/net_adapter.dart';
 import 'package:bilibili/http/core/net_error.dart';
 import 'package:bilibili/http/request/base_request.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class DioAdapter extends MNetAdapter {
   @override
   Future<NetResponse<T>> send<T>(BaseRequest request) async {
-    var response, options = Options(headers: request.header);
+    var response;
 
     var error;
 
+    var url = request.url();
+
+    var httpMethod = request.httpMethod();
+
     try {
-      if (request.httpMethod() == HttpMethod.GET) {
-        response = await Dio().get(request.url(), options: options);
-      } else if (request.httpMethod() == HttpMethod.POST) {
-        response = await Dio()
-            .post(request.url(), data: request.params, options: options);
-      } else if (request.httpMethod() == HttpMethod.DELETE) {
-        response = await Dio()
-            .delete(request.url(), data: request.params, options: options);
+      if (httpMethod == HttpMethod.GET) {
+        response = await http.get(url);
+      } else if (httpMethod == HttpMethod.POST) {
+        response = await http.post(url, body: request.params);
+      } else if (httpMethod == HttpMethod.DELETE) {
+        response = await http.delete(url, body: request.params);
       }
     } on DioError catch (e) {
       error = e;
-      response = e.response;
+      response = e.response as http.Response;
     }
 
     if (error != null) {

@@ -11,17 +11,18 @@ class DioAdapter extends MNetAdapter {
     var error;
 
     HttpMethod method = request.httpMethod();
+    var url = request.url().toString();
     try {
       if (method == HttpMethod.GET) {
-        response = await Dio().get(request.url(), options: options);
+        response = await Dio().get(url, options: options);
       } else if (method == HttpMethod.POST) {
-        response = await Dio()
-            .post(request.url(), data: request.params, options: options);
+        response =
+            await Dio().post(url, data: request.params, options: options);
       } else if (method == HttpMethod.DELETE) {
-        response = await Dio()
-            .delete(request.url(), data: request.params, options: options);
+        response =
+            await Dio().delete(url, data: request.params, options: options);
       }
-    } on DioError catch(e) {
+    } on DioError catch (e) {
       error = e;
       response = e.response;
     }

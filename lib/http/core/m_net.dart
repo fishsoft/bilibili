@@ -23,11 +23,11 @@ class MNet {
     var error;
     try {
       response = await send(request);
-    } on MNetError catch(e){
+    } on MNetError catch (e) {
       error = e;
       response = e.data;
       _printLog(e.message);
-    } catch (e){
+    } catch (e) {
       error = e;
       _printLog(e);
     }
@@ -37,7 +37,7 @@ class MNet {
     var result = response?.data;
     _printLog(result);
     var status = response?.statusCode;
-    switch(status) {
+    switch (status) {
       case 200:
         return result;
       case 401:
