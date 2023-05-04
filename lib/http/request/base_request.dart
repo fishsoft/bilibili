@@ -40,7 +40,7 @@ abstract class BaseRequest {
   }
 
   /// 获取url连接
-  String url() {
+  Uri url() {
     Uri uri;
     var pathStr = path();
     if (pathParams != null) {
@@ -62,6 +62,6 @@ abstract class BaseRequest {
     } else {
       uri = Uri.http(domain(), pathStr, param);
     }
-    return uri.toString();
+    return uri;
   }
 }
