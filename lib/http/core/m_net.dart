@@ -50,7 +50,8 @@ class MNet {
         interceptorError = NeedAuth(result.toString(), data: result);
         break;
       default:
-        interceptorError = error ?? MNetError(status ?? -1, result.toString(), data: result);
+        interceptorError =
+            error ?? MNetError(status ?? -1, result.toString(), data: result);
     }
     if (_errorInterceptor != null) {
       _errorInterceptor!(interceptorError);

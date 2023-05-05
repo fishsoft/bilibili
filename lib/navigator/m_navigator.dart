@@ -98,7 +98,8 @@ abstract class _RouterJumpListener {
 
 typedef OnJumpTo = void Function(RouterStatus routerStatus, {Map? args});
 
-typedef RouterChangeListener = Function(RouterStatusInfo current, RouterStatusInfo? pre);
+typedef RouterChangeListener = Function(
+    RouterStatusInfo current, RouterStatusInfo? pre);
 
 /// 定义路由跳转逻辑
 class RouterJumpListener {

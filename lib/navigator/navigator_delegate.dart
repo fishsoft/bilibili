@@ -14,7 +14,7 @@ class NavigatorDelegate extends RouterDelegate<MRouterPath>
   RouterStatus _routerStatus = RouterStatus.home;
 
   RouterStatus get routerStatus {
-    if(_routerStatus != RouterStatus.register && !hasLogin) {
+    if (_routerStatus != RouterStatus.register && !hasLogin) {
       return _routerStatus = RouterStatus.login;
     }
     return _routerStatus;
@@ -51,44 +51,40 @@ class NavigatorDelegate extends RouterDelegate<MRouterPath>
   @override
   Widget build(BuildContext context) {
     managerStack();
-    return WillPopScope(child:
-    Navigator(
-      key: navigatorKey,
-      pages: pages,
-      onPopPage: (router, result) {
-        /// false不出栈，true出栈，如果栈内没有page，不需要弹栈
-        if (router.didPop(result)) {
-          return false;
-        }
+    return WillPopScope(
+        child: Navigator(
+          key: navigatorKey,
+          pages: pages,
+          onPopPage: (router, result) {
+            /// false不出栈，true出栈，如果栈内没有page，不需要弹栈
+            if (router.didPop(result)) {
+              return false;
+            }
 
-        var tempPages = [...pages];
-        pages.removeLast();
-        /// 关闭页面
-        MNavigator
-            .getInstance()
-            .notify(pages, tempPages);
+            var tempPages = [...pages];
+            pages.removeLast();
 
-        return true;
-      },
-    ),
+            /// 关闭页面
+            MNavigator.getInstance().notify(pages, tempPages);
+
+            return true;
+          },
+        ),
         onWillPop: () async =>
-        !(await navigatorKey?.currentState?.maybePop() ??
-            false));
+            !(await navigatorKey?.currentState?.maybePop() ?? false));
   }
 
   NavigatorDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
-    MNavigator.getInstance().registerRouterJump(RouterJumpListener(onJumpTo: (RouterStatus routerStatus, {Map? args}){
+    MNavigator.getInstance().registerRouterJump(
+        RouterJumpListener(onJumpTo: (RouterStatus routerStatus, {Map? args}) {
       _routerStatus = routerStatus;
       _args = args;
       notifyListeners();
     }));
 
     /// 设置网络错误拦截器
-    MNet.getInstance().setErrorInterceptor((error) => {
-      if (error is NeedLogin) {
-
-      }
-    });
+    MNet.getInstance()
+        .setErrorInterceptor((error) => {if (error is NeedLogin) {}});
   }
 
   @override
