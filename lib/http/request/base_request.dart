@@ -39,6 +39,14 @@ abstract class BaseRequest {
     return this;
   }
 
+  String getAuthorization() {
+    return "Authorization";
+  }
+
+  String getToken() {
+    return "";
+  }
+
   /// 获取url连接
   Uri url() {
     Uri uri;
@@ -62,6 +70,11 @@ abstract class BaseRequest {
     } else {
       uri = Uri.http(domain(), pathStr, param);
     }
+
+    if (needLogin()) {
+      addHeather(getAuthorization(), getToken());
+    }
+
     return uri;
   }
 }

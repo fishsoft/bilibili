@@ -17,3 +17,5 @@ class MNetError implements Exception {
 
   MNetError(this.code, this.message, {this.data});
 }
+
+typedef MErrorInterceptor(MNetError error);

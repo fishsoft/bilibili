@@ -13,6 +13,8 @@ class MNet {
 
   static MNet? instance;
 
+  MErrorInterceptor? _errorInterceptor;
+
   static MNet getInstance() {
     instance ??= MNet._();
     return instance!;
@@ -36,23 +38,33 @@ class MNet {
     }
     var result = response?.data;
     _printLog(result);
+    MNetError interceptorError;
     var status = response?.statusCode;
     switch (status) {
       case 200:
         return result;
       case 401:
-        throw NeedLogin();
+        interceptorError = NeedLogin();
+        break;
       case 403:
-        throw NeedAuth(result.toString(), data: result);
+        interceptorError = NeedAuth(result.toString(), data: result);
+        break;
       default:
-        throw MNetError(status ?? -1, result.toString(), data: result);
+        interceptorError = error ?? MNetError(status ?? -1, result.toString(), data: result);
     }
-    return null;
+    if (_errorInterceptor != null) {
+      _errorInterceptor!(interceptorError);
+    }
+    return interceptorError;
   }
 
   Future<NetResponse<T>?> send<T>(BaseRequest request) async {
     MNetAdapter adapter = DioAdapter();
     return adapter.send(request);
+  }
+
+  void setErrorInterceptor(MErrorInterceptor interceptor) {
+    _errorInterceptor = interceptor;
   }
 
   void _printLog(log) {
