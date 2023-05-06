@@ -3,14 +3,14 @@ enum HttpMethod { POST, GET, DELETE }
 abstract class BaseRequest {
   /// 域名
   String domain() {
-    return "";
+    return "api.bilibili.cn";
   }
 
   /// url路径参数
   var pathParams;
 
   /// url参数
-  Map<String, String> params = Map();
+  Map<String, String> params = {};
 
   /// 请求头
   Map<String, dynamic> header = {};

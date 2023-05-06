@@ -1,7 +1,10 @@
 import 'package:bilibili/navigator/m_navigator.dart';
+import 'package:bilibili/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigator extends StatefulWidget {
+  const BottomNavigator({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _BottomNavigatorState();
@@ -17,15 +20,13 @@ class _BottomNavigatorState extends State<BottomNavigator> {
 
   final _defaultColor = Colors.grey;
 
-  final _activeColor = Colors.grey;
+  final _activeColor = Colors.pink;
 
   final PageController _controller = PageController(initialPage: initialPage);
 
   @override
   Widget build(BuildContext context) {
-    if (_pages.isEmpty) {
-      _pages = [];
-    }
+    _pages = [const HomePage()];
     return Scaffold(
       body: PageView(
         controller: _controller,
