@@ -1,8 +1,7 @@
 import 'package:bilibili/base/base_state.dart';
-import 'package:bilibili/dao/home_dao.dart';
 import 'package:bilibili/model/home_model.dart';
 import 'package:bilibili/pages/home_tab_page.dart';
-import 'package:bilibili/widget/loading_container.dart';
+import 'package:bilibili/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +14,10 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends BaseState<HomePage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with
+        AutomaticKeepAliveClientMixin,
+        TickerProviderStateMixin,
+        WidgetsBindingObserver {
   late TabController _controller;
 
   var tabs = ["推荐", "热门", "追播", "影视", "搞笑", "日常", "综合", "手机游戏", "短片·手书·配音"];
@@ -25,6 +27,8 @@ class HomePageState extends BaseState<HomePage>
   @override
   void initState() {
     super.initState();
+    changeStatusBar(
+        color: Colors.black, statusStyle: StatusStyle.LIGHT_CONTENT);
     _controller = TabController(length: tabs.length, vsync: this);
   }
 
@@ -53,6 +57,21 @@ class HomePageState extends BaseState<HomePage>
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.detached:
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.resumed:
+        changeStatusBar();
+        break;
+      case AppLifecycleState.paused:
+        break;
+    }
+  }
 
   _tabBar() {
     return TabBar(

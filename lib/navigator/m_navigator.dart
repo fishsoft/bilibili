@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// 注册页面
-enum RouterStatus { login, register, home, detail, unknow, target, target2 }
+enum RouterStatus { login, register, home, detail }
 
 RouterStatus getStatus(MaterialPage page) {
   return null!;

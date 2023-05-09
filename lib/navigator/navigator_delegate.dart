@@ -3,6 +3,10 @@ import 'package:bilibili/http/core/m_net.dart';
 import 'package:bilibili/http/core/net_error.dart';
 import 'package:bilibili/navigator/m_navigator.dart';
 import 'package:bilibili/navigator/route_path.dart';
+import 'package:bilibili/pages/home_page.dart';
+import 'package:bilibili/pages/login_page.dart';
+import 'package:bilibili/pages/register_page.dart';
+import 'package:bilibili/pages/video_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class NavigatorDelegate extends RouterDelegate<MRouterPath>
@@ -44,7 +48,20 @@ class NavigatorDelegate extends RouterDelegate<MRouterPath>
   }
 
   MaterialPage getPage(RouterStatus status) {
-    return null!;
+    switch (status) {
+      case RouterStatus.login:
+        print("getPage login");
+        return pageWrapper(const LoginPage());
+      case RouterStatus.home:
+        print("getPage home");
+        return pageWrapper(const HomePage());
+      case RouterStatus.register:
+        print("getPage register");
+        return pageWrapper(const RegisterPage());
+      case RouterStatus.detail:
+        print("getPage detail");
+        return pageWrapper(VideoDetailPage(_args?["video"]));
+    }
   }
 
   /// 页面处理

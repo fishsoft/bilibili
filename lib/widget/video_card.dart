@@ -1,17 +1,24 @@
+import 'package:bilibili/api/video.dart';
 import 'package:bilibili/model/home_model.dart';
+import 'package:bilibili/model/video_model.dart';
+import 'package:bilibili/navigator/m_navigator.dart';
 import 'package:bilibili/utils/format_utils.dart';
 import 'package:bilibili/utils/view_utils.dart';
 import 'package:flutter/material.dart';
 
 class VideoCard extends StatelessWidget {
-  HomeMo? data;
+  final VideoModel data;
 
-  VideoCard({Key? key, this.data}) : super(key: key);
+  const VideoCard({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        print("VideoCard onClick");
+        MNavigator.getInstance()
+            .onJumpTo(RouterStatus.detail, args: {"video": data});
+      },
       child: SizedBox(
         height: 200,
         child: Card(
@@ -32,7 +39,7 @@ class VideoCard extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Stack(
       children: [
-        cacheImage(data?.pic ?? "", width: size.width / 2 - 10, height: 120),
+        cacheImage(data.cover, width: size.width / 2 - 10, height: 120),
         Positioned(
             left: 0,
             right: 0,
@@ -48,9 +55,9 @@ class VideoCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _iconText(Icons.ondemand_video, count: data?.aid ?? 0),
-                  _iconText(Icons.favorite_border, count: data?.favorites ?? 0),
-                  _iconText(null, duration: data?.duration),
+                  _iconText(Icons.ondemand_video, data.view),
+                  _iconText(Icons.favorite_border, data.favorite),
+                  _iconText(null, data.duration),
                 ],
               ),
             ))
@@ -58,12 +65,12 @@ class VideoCard extends StatelessWidget {
     );
   }
 
-  _iconText(IconData? iconData, {int? count, String? duration}) {
+  _iconText(IconData? iconData, int count) {
     String durations = "";
     if (iconData != null) {
-      durations = count != null ? countFormat(count) : "";
+      durations = countFormat(count);
     } else {
-      durations = data?.duration ?? "00:00";
+      durations = durationTransform(data.duration);
     }
     return Row(
       children: [
@@ -93,7 +100,7 @@ class VideoCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            data?.title ?? "",
+            data.title,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 12, color: Colors.black87),
@@ -105,6 +112,7 @@ class VideoCard extends StatelessWidget {
   }
 
   _owner() {
+    var owner = data.owner;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -112,13 +120,12 @@ class VideoCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: cacheImage(data?.lastRecommend?.last.face ?? "",
-                  height: 24, width: 24),
+              child: cacheImage(owner.face, height: 24, width: 24),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: Text(
-                data?.lastRecommend?.last.uname ?? "",
+                owner.name,
                 style: const TextStyle(fontSize: 11, color: Colors.black87),
               ),
             )

@@ -1,7 +1,9 @@
+import 'package:bilibili/api/video.dart';
 import 'package:bilibili/banner/banner.dart';
 import 'package:bilibili/base/base_state.dart';
 import 'package:bilibili/dao/home_dao.dart';
 import 'package:bilibili/model/home_model.dart';
+import 'package:bilibili/model/video_model.dart';
 import 'package:bilibili/widget/loading_container.dart';
 import 'package:bilibili/widget/video_card.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,8 @@ class _HomeTabPageState extends BaseState<HomeTabPage> {
 
   List<HomeMo> data = [];
 
+  List<VideoModel> _videos = videos.toList();
+
   int pageIndex = 0;
 
   int pageSize = 10;
@@ -35,6 +39,7 @@ class _HomeTabPageState extends BaseState<HomeTabPage> {
       var dis = _scrollController.position.maxScrollExtent -
           _scrollController.position.pixels;
       if (dis < 300) {
+        print('------_loadData---');
         _loadData(loadMore: true);
       }
     });
@@ -70,7 +75,7 @@ class _HomeTabPageState extends BaseState<HomeTabPage> {
                       padding: const EdgeInsets.only(bottom: 8),
                       child: _banner());
                 } else {
-                  return VideoCard(data: data[index]);
+                  return VideoCard(data: _videos[index]);
                 }
               },
               staggeredTileBuilder: (int index) {
@@ -93,6 +98,7 @@ class _HomeTabPageState extends BaseState<HomeTabPage> {
   }
 
   Future<void> _loadData({loadMore = false}) async {
+    print("_loadData:$loadMore");
     if (!loadMore) {
       pageIndex = 1;
     }
