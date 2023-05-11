@@ -156,12 +156,12 @@ class LastRecommend {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['mid'] = this.mid;
-    data['time'] = this.time;
-    data['msg'] = this.msg;
-    data['uname'] = this.uname;
-    data['face'] = this.face;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['mid'] = mid;
+    data['time'] = time;
+    data['msg'] = msg;
+    data['uname'] = uname;
+    data['face'] = face;
     return data;
   }
 }

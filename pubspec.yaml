@@ -49,6 +49,7 @@ dependencies:
   chewie: ^1.4.0
   video_player: ^2.6.1
   orientation: ^1.3.0
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

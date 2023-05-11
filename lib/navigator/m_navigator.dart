@@ -63,6 +63,7 @@ class MNavigator extends _RouterJumpListener {
 
   /// 注册路由跳转逻辑
   void registerRouterJump(RouterJumpListener routerJumpListener) {
+    print("registerRouterJump");
     _routerJump = routerJumpListener;
   }
 
@@ -87,6 +88,7 @@ class MNavigator extends _RouterJumpListener {
 
   @override
   void onJumpTo(RouterStatus routerStatus, {Map? args}) {
+    print("onJumpTo, routerJump: ${_routerJump == null}");
     _routerJump?.onJumpTo(routerStatus, args: args);
   }
 }

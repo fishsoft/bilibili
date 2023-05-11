@@ -92,6 +92,7 @@ class NavigatorDelegate extends RouterDelegate<MRouterPath>
   }
 
   NavigatorDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
+    print("navigator delegate");
     MNavigator.getInstance().registerRouterJump(
         RouterJumpListener(onJumpTo: (RouterStatus routerStatus, {Map? args}) {
       _routerStatus = routerStatus;
